@@ -83,6 +83,9 @@
 
 				controls.maxPolarAngle = Math.PI / 2;
 
+				// init positioning
+				controls.object.position.y = 0
+
 				// disabling controls
 				controls.enableRotate = false;
 				controls.enableZoom = false;
@@ -135,6 +138,14 @@
 				requestAnimationFrame( animate );
 
 				controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+
+				if (controls.object.position.z > 200) {
+					controls.object.position.z = 200;
+					controls.target.z = 200;
+				} else if (controls.object.position.z < -200) {
+					controls.object.position.z = -200;
+					controls.target.z = -200;
+				};
 
 				render();
 
