@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'map.apps.MapConfig',
+    'carousel.apps.CarouselConfig',
     'slider.apps.SliderConfig',
     'django.contrib.admin',
     'django.contrib.auth',

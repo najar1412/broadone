@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('slider/', include('slider.urls')),
+    path('', include('slider.urls')),
+    path('carousel/', include('carousel.urls')),
+    path('map/', include('map.urls')),
+    path('slider', include('slider.urls')),
     path('admin/', admin.site.urls),
 ]
