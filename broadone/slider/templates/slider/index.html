@@ -41,6 +41,18 @@
 		<script src="{% static 'slider/js/three.js/modules/OrbitControls.js' %}"></script>
 		<script src="{% static 'slider/js/three.js/modules/WebGL.js' %}"></script>
 
+		<!--loading parallax images-->
+		<script>
+			var birds_01 = "{% static 'slider/ele/01_birds.png' %}"
+			var sea_02 = "{% static 'slider/ele/02_sea.png' %}"
+			var boat_03 = "{% static 'slider/ele/03_boat.png' %}"
+			var city_main_04 = "{% static 'slider/ele/04_city_main.png' %}"
+			var city_05 = "{% static 'slider/ele/05_city.png' %}"
+			var city_06 = "{% static 'slider/ele/06_city.png' %}"
+			var city_07 = "{% static 'slider/ele/07_city.png' %}"
+			var clouds_08 = "{% static 'slider/ele/08_clouds.png' %}"
+		</script>
+
 		<script>
 
 			if ( WEBGL.isWebGLAvailable() === false ) {
@@ -58,8 +70,8 @@
 			function init() {
 
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xcccccc );
-				scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+				scene.background = new THREE.Color( 0xffffff );
+				// scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -67,7 +79,7 @@
 				document.body.appendChild( renderer.domElement );
 
 				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
-				camera.position.set( 400, 200, 0 );
+				//camera.position.set( 0, 0, 0 );
 
 				// controls
 				controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -84,7 +96,8 @@
 				controls.maxPolarAngle = Math.PI / 2;
 
 				// init positioning
-				controls.object.position.y = 0
+				controls.object.position.y = 0;
+				controls.object.position.z = 10;
 
 				// disabling controls
 				controls.enableRotate = false;
@@ -92,6 +105,98 @@
 				controls.enableKeys = false;
 
 				// world
+				
+				// 01
+				var plane_01_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_01_tex = new THREE.TextureLoader().load( birds_01 );
+				var plane_01_mat = new THREE.MeshBasicMaterial( { map: plane_01_tex, transparent: true,});
+
+				var plane_01 = new THREE.Mesh( plane_01_geo, plane_01_mat );
+				scene.add( plane_01 );
+				plane_01.position.z = 0
+
+				// 02
+				var plane_02_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_02_tex = new THREE.TextureLoader().load( sea_02 );
+				var plane_02_mat = new THREE.MeshBasicMaterial( { map: plane_02_tex, transparent: true,});
+
+				var plane_02 = new THREE.Mesh( plane_02_geo, plane_02_mat );
+				scene.add( plane_02 );
+				plane_02.position.z = 0
+
+				// 03
+				var plane_03_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_03_tex = new THREE.TextureLoader().load( boat_03 );
+				var plane_03_mat = new THREE.MeshBasicMaterial( { map: plane_03_tex, transparent: true,});
+
+				var plane_03 = new THREE.Mesh( plane_03_geo, plane_03_mat );
+				scene.add( plane_03 );
+				plane_03.position.z = 0
+
+				// 04
+				var plane_04_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_04_tex = new THREE.TextureLoader().load( city_main_04 );
+				var plane_04_mat = new THREE.MeshBasicMaterial( { map: plane_04_tex, transparent: true,});
+
+				var plane_04 = new THREE.Mesh( plane_04_geo, plane_04_mat );
+				scene.add( plane_04 );
+				plane_04.position.z = -20
+
+				// 05
+				var plane_05_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_05_tex = new THREE.TextureLoader().load( city_05 );
+				var plane_05_mat = new THREE.MeshBasicMaterial( { map: plane_05_tex, transparent: true,});
+
+				var plane_05 = new THREE.Mesh( plane_05_geo, plane_05_mat );
+				scene.add( plane_05 );
+				plane_05.position.z = -40
+
+				// 06
+				var plane_06_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_06_tex = new THREE.TextureLoader().load( city_06 );
+				var plane_06_mat = new THREE.MeshBasicMaterial( { map: plane_06_tex, transparent: true,});
+
+				var plane_06 = new THREE.Mesh( plane_06_geo, plane_06_mat );
+				scene.add( plane_06 );
+				plane_06.position.z = -60
+
+				// 07
+				var plane_07_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_07_tex = new THREE.TextureLoader().load( city_07 );
+				var plane_07_mat = new THREE.MeshBasicMaterial( { map: plane_07_tex, transparent: true,});
+
+				var plane_07 = new THREE.Mesh( plane_07_geo, plane_07_mat );
+				scene.add( plane_07 );
+				plane_07.position.z = -80
+
+				// 08
+				var plane_08_geo = new THREE.PlaneGeometry( 300, 150);
+				var plane_08_tex = new THREE.TextureLoader().load( clouds_08 );
+				var plane_08_mat = new THREE.MeshBasicMaterial( { map: plane_08_tex, transparent: true,});
+
+				var plane_08 = new THREE.Mesh( plane_08_geo, plane_08_mat );
+				scene.add( plane_08 );
+				plane_08.position.z = -200
+
+				//create a group and add the two cubes
+				//These cubes can now be rotated / scaled etc as a group
+				var group = new THREE.Group();
+				group.add( plane_01 );
+				group.add( plane_02 );
+				group.add( plane_03 );
+				group.add( plane_04 );
+				group.add( plane_05 );
+				group.add( plane_06 );
+				group.add( plane_07 );
+				group.add( plane_08 );
+
+				scene.add( group );
+
+				group.position.y = 40;
+				group.position.z = 40;
+
+
+				/*
 				var geometry = new THREE.CylinderBufferGeometry( 0, 10, 30, 4, 1 );
 				var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
 
@@ -106,6 +211,7 @@
 					scene.add( mesh );
 
 				}
+				*/
 
 				// lights
 				var light = new THREE.DirectionalLight( 0xffffff );
