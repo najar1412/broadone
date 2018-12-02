@@ -57,13 +57,13 @@
 		<script>
 
 			if ( WEBGL.isWebGLAvailable() === false ) {
-
 				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
-
-			}
+			};
 
 			var camera, controls, scene, renderer;
+
 			var mouse = new THREE.Vector2(), INTERSECTED;
+			var meshView, meshCamera;
 
 			init();
 			//render(); // remove when using next line for animation loop (requestAnimationFrame)
@@ -81,7 +81,9 @@
 				document.body.appendChild( renderer.domElement );
 
 				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
-				//camera.position.set( 0, 0, 0 );
+
+				// meshView
+				meshView = false;
 
 				// controls
 				controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -92,14 +94,14 @@
 
 				controls.screenSpacePanning = true;
 
-				controls.minDistance = 100;
+				controls.minDistance = 0;
 				controls.maxDistance = 500;
 
 				controls.maxPolarAngle = Math.PI / 2;
 
 				// init positioning
 				controls.object.position.y = 0;
-				controls.object.position.z = 10;
+				controls.object.position.z = 100;
 
 				// disabling controls
 				controls.enableRotate = false;
@@ -202,10 +204,6 @@
 				light.position.set( 1, 1, 1 );
 				scene.add( light );
 
-				var light = new THREE.DirectionalLight( 0x002288 );
-				light.position.set( - 1, - 1, - 1 );
-				scene.add( light );
-
 				var light = new THREE.AmbientLight( 0x222222 );
 				scene.add( light );
 
@@ -213,6 +211,7 @@
 				raycaster = new THREE.Raycaster();
 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
 				//
 				window.addEventListener( 'resize', onWindowResize, false );
@@ -220,7 +219,6 @@
 			}
 
 			function onWindowResize() {
-
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
@@ -234,18 +232,38 @@
 				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 			}
 
-			function animate() {
+			function onDocumentMouseUp( event ) {
+				event.preventDefault();
+				if (meshView) {
+					// revert to original camera
+					controls.object.position.z += 40;
+					meshView = false;
+				} else {
+					if (INTERSECTED) {
+						flyToMesh(INTERSECTED);
+						meshView = true;
+					};
 
+				};
+				
+			}
+
+			function flyToMesh(mesh) {
+				controls.object.position.z -= 40;
+			};
+
+			function animate() {
 				requestAnimationFrame( animate );
 
 				controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
 
-				if (controls.object.position.z > 200) {
-					controls.object.position.z = 200;
-					controls.target.z = 200;
-				} else if (controls.object.position.z < -200) {
-					controls.object.position.z = -200;
-					controls.target.z = -200;
+				if (controls.object.position.x > 110) {
+					controls.object.position.x = 110;
+					controls.target.x = 110;
+
+				} else if (controls.object.position.x < -110) {
+					controls.object.position.x = -110;
+					controls.target.x = -110;
 				};
 
 				render();
@@ -279,5 +297,3 @@
 
 	</body>
 </html>
-
-
